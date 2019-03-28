@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="../libs/jq331.js"></script>
+    <script src="../threejs/threeV100.js"></script>
+    <link rel="icon" href="../favicon.ico" type="image/gif">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #root {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #ctrls {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #ctrls span {
+            display: block;
+            height: 30px;
+            font-size: 25px;
+        }
+    </style>
+    <title>Game</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    <div id="ctrls">
+        <SPAN>LIGHT INTENSITY: <input id="intense" type="range" min="1" max="30" value="1"></SPAN>
+        <SPAN>LIGHT HEIGHT: <input id="height" type="range" min="1" max="500"></SPAN>
+    </div>
+
+    <script src="../threejs/OrbitControls.js"></script>
+    <script src="../js3D/Settings.js"></script>
+    <script src="../js3D/Doors3D.js"></script>
+    <script src="../js3D/Light.js"></script>
+    <script src="../js3D/Hex3D.js"></script>
+    <script src="../js3D/net.js"></script>
+    <script src="../js3D/Main3D.js"></script>
+    <script src="../js3D/Level3D.js"></script>
+    <script src="../js3D/Ui.js"></script>
+
+</body>
+
+</html>

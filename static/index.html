@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Generate map</title>
+    <script src="libs/jq331.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.ico" type="image/gif">
+</head>
+
+<body>
+    <div id="menu">
+
+        <input type="button" id="sendTo" value="Generate Map">
+        <select id="hexAmount"></select><br>
+        <input type="button" id="load" value="Load Map">
+        <form action="/game" method="POST">
+            <input type="submit" id="game" value="START"></form><br>
+        <form action="/test" method="POST">
+            <input type="submit" id="test" value="TEST"></form><br>
+        <input type="button" id="light" value="light"><br>
+        <input type="button" id="wall" value="wall"><br>
+        <input type="button" id="enemy" value="enemy"><br>
+        <input type="button" id="treasure" value="treasure">
+
+    </div>
+    <div id="map"></div>
+
+    <script src="js/hex.js"></script>
+    <script src="js/generator.js"></script>
+    <script src="js/net.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
