@@ -13,10 +13,10 @@ $(document).ready(() => {
         10000 // maxymalna renderowana odległość od kamery
     )
     camera.position.set(0, Settings.radius * 15, 0)
-    var orbitControl = new THREE.OrbitControls(camera, renderer.domElement);
-    orbitControl.addEventListener('change', function () {
-        renderer.render(scene, camera)
-    });
+    // var orbitControl = new THREE.OrbitControls(camera, renderer.domElement);
+    // orbitControl.addEventListener('change', function () {
+    //     renderer.render(scene, camera)
+    // });
     renderer.setClearColor(0xaa5555);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true
@@ -36,13 +36,15 @@ $(document).ready(() => {
     });
     var torus = new THREE.Mesh(geometry, material);
     torus.rotation.x = Math.PI / 2
+    //intersects = raycaster.intersectObjects( scene.children, true );    
 
     var movement = () => {
-
         mouseVector.x = (event.clientX / $(window).width()) * 2 - 1;
         mouseVector.y = -(event.clientY / $(window).height()) * 2 + 1;
         raycaster.setFromCamera(mouseVector, camera);
-        var intersects = raycaster.intersectObjects(scene.children);
+        var intersects = raycaster.intersectObjects(scene.children, true);
+        console.log(raycaster);
+        
         if (intersects.length > 0) {
             clickedVect = intersects[0].point
             console.log(clickedVect)

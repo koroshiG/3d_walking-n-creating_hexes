@@ -9,13 +9,10 @@ class Model {
 
         var loader = new THREE.JSONLoader();
 
-        var modelMaterial = new THREE.MeshBasicMaterial({
-            map: new THREE.TextureLoader().load("../mats/Sailormoon.png"),
-            morphTargets: true // ta własność odpowiada za animację materiału modelu
-        });
+        
 
         loader.load(url, (geometry) => {
-            var meshModel = new THREE.Mesh(geometry, modelMaterial);
+            var meshModel = new THREE.Mesh(geometry, Settings.modelMaterial);
             meshModel.name = "sai";
             //meshModel.rotation.y = ? ? ; // ustaw obrót modelu
             meshModel.position.y = 50 ; // ustaw pozycje modelu

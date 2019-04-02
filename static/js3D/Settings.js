@@ -2,7 +2,7 @@ var Settings = {
     lightTab: [],
     radius: 200,
     wall_thic: 14,
-    wall_height: 30,
+    wall_height: 130,
     floor_thic: 2,
     whatDo: null,
     materialTreasure: new THREE.MeshPhongMaterial({
@@ -28,5 +28,9 @@ var Settings = {
         specular: 0xffffff,
         shininess: 5,
         side: THREE.DoubleSide,
+    }),
+    modelMaterial: new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("../mats/Sailormoon.png"),
+        morphTargets: true // ta własność odpowiada za animację materiału modelu
     })
 }

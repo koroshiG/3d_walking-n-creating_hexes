@@ -38,7 +38,7 @@ class Hex3D {
             } else {
                 var side = wall.clone()
             }
-            side.position.y = Settings.wall_height / 2;
+            
             switch (i) {
                 case 3:
                     side.position.z = this.z + (Settings.radius / 2) * Math.sqrt(3);
@@ -66,6 +66,7 @@ class Hex3D {
                     break;
             }
             side.lookAt(this.container.position)
+            side.position.y = Settings.wall_height / 2;
             this.container.add(side)
         }
         if (this.wallMaterial == Settings.materialWall) {
