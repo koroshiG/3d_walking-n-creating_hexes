@@ -1,14 +1,20 @@
 class Player {
-    constructor() {
+    constructor(player) {
         this.container = new THREE.Object3D()
         this.geometry = new THREE.BoxGeometry(35, 35, 35);
         this.material = new THREE.MeshBasicMaterial({
             color: 0xddccee
         });
-        this.player = new THREE.Mesh(this.geometry, this.material) // player sześcian
-        this.player.position.y = 17.5
+
+        this.player = player
+        this.init()
+    }
+
+    init() {
         this.container.add(this.player) // kontener w którym jest player
+        this.player.rotation.y = Math.PI/2
         this.axes = new THREE.AxesHelper(200) // osie konieczne do kontroli kierunku ruchu
+        this.axes.rotation.y = -Math.PI/2
         this.player.add(this.axes)
     }
 }

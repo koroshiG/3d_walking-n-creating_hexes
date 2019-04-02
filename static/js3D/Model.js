@@ -1,44 +1,53 @@
 class Model {
 
     constructor() {
-        this.container = new THREE.Object3D()
-        this.mixer = null
+        this.container = new THREE.Object3D();
+        this.mixer = undefined;
     }
 
-    loadModel = function (url, callback) {
+    loadModel (url, callback) {
 
         var loader = new THREE.JSONLoader();
 
-        loader.load(url, function (geometry) {
+        var modelMaterial = new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load("../mats/Sailormoon.png"),
+            morphTargets: true // ta własność odpowiada za animację materiału modelu
+        });
 
-            // ładowanie modelu jak poprzednio
-
-            //utworzenie mixera jak poprzednio
-
-            //dodanie modelu do kontenera
-
-            container.add(meshModel)
-
+        loader.load(url, (geometry) => {
+            var meshModel = new THREE.Mesh(geometry, modelMaterial);
+            meshModel.name = "sai";
+            //meshModel.rotation.y = ? ? ; // ustaw obrót modelu
+            meshModel.position.y = 50 ; // ustaw pozycje modelu
+            meshModel.scale.set(2, 2, 2); // ustaw skalę modelu
+            this.mixer = new THREE.AnimationMixer(meshModel)
+            console.log(geometry.animations);
+            
+            this.container.add(meshModel);
             // zwrócenie kontenera
 
-            callback(container);
-
-        });
+            callback(this.container);
+            
+        })
     }
 
 
-    // update mixera
+    //update mixera
 
-    updateModel() {
+    updateModel(delta) {
         if (this.mixer) {
-            this.mixer.update(delta)
+            this.mixer.update(delta);
         }
     }
 
     //animowanie postaci
 
-    setAnimation() {
-        this.mixer.clipAction("run").play();
+    setAnimation(animation) {
+        this.mixer.clipAction(animation).play()
+    }
+
+    stopAnimation(animation) {
+        this.mixer.clipAction(animation).stop()
     }
 
 }

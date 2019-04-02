@@ -3,7 +3,9 @@ $(document).ready(() => {
 
     lightTab = [];
     var scene = new THREE.Scene();
-    var renderer = new THREE.WebGLRenderer({antialias:true});
+    var renderer = new THREE.WebGLRenderer({
+        antialias: true
+    });
     var camera = new THREE.PerspectiveCamera(
         45, // kąt patrzenia kamery (FOV - field of view)
         window.innerWidth / window.innerHeight, // proporcje widoku, powinny odpowiadać proporjom naszego ekranu przeglądarki
@@ -19,6 +21,60 @@ $(document).ready(() => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    var raycaster = new THREE.Raycaster(); // obiekt symulujący "rzucanie" promieni
+    var clock = new THREE.Clock();
+    var clickedVect = new THREE.Vector3(0, 0, 0); // wektor określający PUNKT kliknięcia
+    var directionVect = new THREE.Vector3(0, 0, 0); // wektor określający KIERUNEK ruchu playera
+    var mouseVector = new THREE.Vector2()
+    // ten wektor czyli pozycja w przestrzeni 2D na ekranie(x,y)
+    // wykorzystany będzie do określenie pozycji myszy na ekranie
+    // a potem przeliczenia na pozycje 3D
+
+    var geometry = new THREE.TorusGeometry(10, 2, 30, 30);
+    var material = new THREE.MeshBasicMaterial({
+        color: 0xdd55bb
+    });
+    var torus = new THREE.Mesh(geometry, material);
+    torus.rotation.x = Math.PI / 2
+
+    var movement = () => {
+
+        mouseVector.x = (event.clientX / $(window).width()) * 2 - 1;
+        mouseVector.y = -(event.clientY / $(window).height()) * 2 + 1;
+        raycaster.setFromCamera(mouseVector, camera);
+        var intersects = raycaster.intersectObjects(scene.children);
+        if (intersects.length > 0) {
+            clickedVect = intersects[0].point
+            console.log(clickedVect)
+            console.log(torus);
+
+            torus.position.copy(clickedVect)
+            directionVect = clickedVect.clone().sub(player.container.position).normalize()
+            console.log(directionVect)
+            var angle = Math.atan2(
+                player.container.position.clone().x - clickedVect.x,
+                player.container.position.clone().z - clickedVect.z
+            )
+            player.player.rotation.y = angle - Math.PI / 2
+            model.setAnimation("run")
+            model.stopAnimation("stand")
+            //funkcja normalize() przelicza współrzędne x,y,z wektora na zakres 0-1
+            //jest to wymagane przez kolejne funkcje	
+        }
+    }
+
+    $(document).mousedown((event) => {
+        movement()
+        $(document).mousemove(movement)
+    })
+
+    $(document).mouseup((event) => {
+        $(document).off("mousemove", movement)
+    })
+    scene.add(torus);
+
+    player = new Player(model.container)
+    scene.add(player.container)
 
     $("#root").append(renderer.domElement);
 
@@ -30,6 +86,7 @@ $(document).ready(() => {
     console.log(Settings.whatDo);
 
     for (item in Settings.whatDo) {
+
         if (Settings.whatDo[item].x % 2 != 0) {
             var z = ((Settings.whatDo[item].z + 1) * ((Settings.radius / 2) * Math.sqrt(3)) + ((Settings.radius / 4) * Math.sqrt(3)));
         } else {
@@ -108,6 +165,12 @@ $(document).ready(() => {
             }
         }
         var hex = new Hex3D(x, z, wallGeo, material, floorGeo, inDoor, Settings.whatDo[item].dirOut, doorGeo);
+        if (item == 0) {
+            console.log("pos");
+
+            player.container.position.z = z
+            player.container.position.x = x
+        }
         if (hex.container.getObjectByName("light") != undefined) {
             lightTab.push(hex.container.getObjectByName("light").getObjectByProperty("type", "PointLight"));
         }
@@ -126,8 +189,24 @@ $(document).ready(() => {
 
     Settings.light = lightTab;
 
+
+
     function render() {
 
+        if (player.container.position.clone().distanceTo(clickedVect) > 5) {
+            player.container.translateOnAxis(directionVect, 5)
+            camera.position.x = player.container.position.x
+            camera.position.z = player.container.position.z + 500
+            camera.position.y = player.container.position.y + 500
+            camera.lookAt(player.container.position)
+        } else if (model.mixer != undefined) {
+            model.stopAnimation("run")
+            model.setAnimation("stand")
+        }
+        //w tym miejscu ustalamy wszelkie zmiany w projekcie (obrót, skalę, położenie obiektów)
+        //np zmieniająca się wartość rotacji obiektu
+        var delta = clock.getDelta()
+        model.updateModel(delta)
 
         //w tym miejscu ustalamy wszelkie zmiany w projekcie (obrót, skalę, położenie obiektów)
         //np zmieniająca się wartość rotacji obiektu
