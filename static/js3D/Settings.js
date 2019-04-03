@@ -29,8 +29,14 @@ var Settings = {
         shininess: 5,
         side: THREE.DoubleSide,
     }),
-    modelMaterial: new THREE.MeshBasicMaterial({
+    playerMat: new THREE.MeshPhongMaterial({
         map: new THREE.TextureLoader().load("../mats/Sailormoon.png"),
-        morphTargets: true // ta własność odpowiada za animację materiału modelu
+        morphTargets: true, // ta własność odpowiada za animację materiału modelu
+        shininess: 100,
+    }),
+    allyMat: new THREE.MeshPhongMaterial({
+        map: new THREE.TextureLoader().load("../mats/sailorAlly.png"),
+        morphTargets: true, // ta własność odpowiada za animację materiału modelu
+        shininess: 100,
     })
 }

@@ -93,7 +93,7 @@ $(document).ready(() => {
     plane.rotation.x = Math.PI / 2
     scene.add(plane)
 
-    var directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
+    var directionalLight = new THREE.DirectionalLight(0xffffff, 1.8);
     directionalLight.castShadow = true;
     var helper = new THREE.CameraHelper(directionalLight.shadow.camera);
     scene.add(helper);
@@ -101,6 +101,9 @@ $(document).ready(() => {
 
     player = new Player(model.container)
     scene.add(player.container)
+
+    //newally = new Player(ally.container)
+    //scene.add(newally.container)
 
     function render() {
         console.log(player.container.position.clone().distanceTo(clickedVect));

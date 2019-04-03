@@ -27,6 +27,7 @@ class Hex3D {
         floor.position.x = this.x;
         floor.rotation.y = Math.PI / 6;
         floor.receiveShadow = true;
+        floor.name = "floor";
 
 
         for (var i = 0; i < 6; i++) {

@@ -43,16 +43,12 @@ $(document).ready(() => {
         mouseVector.y = -(event.clientY / $(window).height()) * 2 + 1;
         raycaster.setFromCamera(mouseVector, camera);
         var intersects = raycaster.intersectObjects(scene.children, true);
-        console.log(raycaster);
-        
         if (intersects.length > 0) {
             clickedVect = intersects[0].point
-            console.log(clickedVect)
-            console.log(torus);
-
+            clickedVect.y = 1;
             torus.position.copy(clickedVect)
             directionVect = clickedVect.clone().sub(player.container.position).normalize()
-            console.log(directionVect)
+            //console.log(directionVect)
             var angle = Math.atan2(
                 player.container.position.clone().x - clickedVect.x,
                 player.container.position.clone().z - clickedVect.z
@@ -76,7 +72,19 @@ $(document).ready(() => {
     scene.add(torus);
 
     player = new Player(model.container)
+    var spotlight = new THREE.PointLight(0xff0000);
+    spotlight.position.y += 1;
+    spotlight.intensity = 2;
+    spotlight.distance = 258;
+    spotlight.angle = 0.53;
+    spotlight.decay = 1;
+    spotlight.name = "playerLight";
+    player.player.add(spotlight);
+    playerLight = player.player.getObjectByName("playerLight");
+
+
     scene.add(player.container)
+    console.log(playerLight);
 
     $("#root").append(renderer.domElement);
 
@@ -168,10 +176,8 @@ $(document).ready(() => {
         }
         var hex = new Hex3D(x, z, wallGeo, material, floorGeo, inDoor, Settings.whatDo[item].dirOut, doorGeo);
         if (item == 0) {
-            console.log("pos");
-
-            player.container.position.z = z
-            player.container.position.x = x
+            player.container.position.z = 1.75 * z
+            player.container.position.x = 2 * x
         }
         if (hex.container.getObjectByName("light") != undefined) {
             lightTab.push(hex.container.getObjectByName("light").getObjectByProperty("type", "PointLight"));
@@ -183,7 +189,7 @@ $(document).ready(() => {
     // var helper = new THREE.HemisphereLightHelper( light, 1000 );
     // scene.add(light);
     // scene.add( helper );
-    var directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
+    var directionalLight = new THREE.DirectionalLight(0xffffff, 0.25);
     directionalLight.castShadow = true;
     var helper = new THREE.CameraHelper(directionalLight.shadow.camera);
     scene.add(helper);
