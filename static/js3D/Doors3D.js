@@ -14,8 +14,8 @@ class Doors3D {
         var p1 = new THREE.Mesh(this.geometry, this.material);
         var p2 = new THREE.Mesh(this.geometry, this.material);
 
-        p1.position.x = (1 * Settings.radius/3);
-        p2.position.x = (-1 * Settings.radius/3);
+        p1.position.x = (1 * Settings.radius/2.5);
+        p2.position.x = (-1 * Settings.radius/2.5);
 
         this.container.add(p1);
         this.container.add(p2);

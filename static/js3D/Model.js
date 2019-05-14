@@ -23,7 +23,7 @@ class Model {
             this.container.add(meshModel);
             // zwrócenie kontenera
 
-            callback(this.container);
+            callback(this.mixer);
             
         })
     }
